@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Tags {
+  front
+  back
+  flutter
+}
+
+model Posts {
+  id      String   @id
+  title   String
+  content String[]
+  tags    Tags[]
+
+  @@map("posts")
+}
