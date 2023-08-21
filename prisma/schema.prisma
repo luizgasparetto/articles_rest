@@ -7,17 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Tags {
-  front
-  back
-  flutter
-}
 
 model Posts {
-  id      String   @id
+  id      String   @id @default(uuid())
   title   String
   content String[]
-  tags    Tags[]
+  tags    String[]
+  user    Users    @relation(fields: [userId],  references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId  String
 
   @@map("posts")
+}
+
+
+model Users {
+  id        String @id @default(uuid())
+  username  String @unique
+  password  String
+  image_url String
+  posts     Posts[]
+
+  @@map("users")
 }

@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports: 5432:5432
+    volumes: postgres:/data/postgres
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+  
+  app:
+    build: .
+    depends_on: postgres
+    container_name: sukuna
+    restart: always
+    ports: 8080:8080
+    volumes: sukuna:/var/sukuna
+    env_file: .env
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  driver:
+    - bridge
