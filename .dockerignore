@@ -2,3 +2,5 @@ node_modules
 test
 yarn.lock
 dist
+Dockerfile
+npm-debug.log
