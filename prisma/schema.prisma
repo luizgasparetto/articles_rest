@@ -7,29 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Roles {
-  common_user
-  admin
-}
-
 model Users {
-  id        String @id @default(uuid())
-  username  String @unique
+  id        String  @id @default(uuid())
+  username  String  @unique
   password  String
   image_url String
-  role      Roles
+  role      String
   posts     Posts[]
 
   @@map("users")
 }
 
 model Posts {
-  id      String   @id @default(uuid())
-  title   String
-  content String[]
-  tags    String[]
-  user    Users    @relation(fields: [id_user],  references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_user  String
+  id         String    @id @default(uuid())
+  title      String
+  content    String[]
+  tags       String[]
+  user       Users     @relation(fields: [id_user], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_user    String
+  created_at DateTime  @default(now())
+  updated_at DateTime?
 
   @@map("posts")
 }

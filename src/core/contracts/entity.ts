@@ -2,8 +2,8 @@ export abstract class Entity<T> {
   public readonly id: string;
   public readonly props: T;
 
-  constructor(props: T) {
-    this.id = crypto.randomUUID();
+  constructor(props: T, id?: string,) {
+    this.id = id ?? crypto.randomUUID();
     this.props = props;
   }
 

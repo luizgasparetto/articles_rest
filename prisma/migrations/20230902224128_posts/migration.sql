@@ -1,25 +1,25 @@
-/*
-  Warnings:
-
-  - Added the required column `id_user` to the `posts` table without a default value. This is not possible if the table is not empty.
-
-*/
--- CreateEnum
-CREATE TYPE "Roles" AS ENUM ('common_user', 'admin');
-
--- AlterTable
-ALTER TABLE "posts" ADD COLUMN     "id_user" TEXT NOT NULL,
-ADD COLUMN     "tags" TEXT[];
-
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "image_url" TEXT NOT NULL,
-    "role" "Roles" NOT NULL,
+    "role" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "posts" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT[],
+    "tags" TEXT[],
+    "id_user" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "posts_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

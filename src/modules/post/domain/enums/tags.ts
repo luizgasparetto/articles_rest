@@ -1,5 +1,1 @@
-enum Tags {
-  front,
-  back,
-  flutter
-}
+enum Tags { frontend, backend, mobile }
