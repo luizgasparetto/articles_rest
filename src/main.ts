@@ -8,7 +8,7 @@ async function bootstrap() {
 
   SwaggerDocs.init(app);
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT ?? 3000);
 }
 
 bootstrap();

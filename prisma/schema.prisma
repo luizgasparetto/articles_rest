@@ -19,14 +19,14 @@ model Users {
 }
 
 model Posts {
-  id         String    @id @default(uuid())
-  title      String
+  id         String   @id @default(uuid())
+  title      String   @unique
   content    String[]
   tags       String[]
-  user       Users     @relation(fields: [id_user], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       Users    @relation(fields: [id_user], references: [id], onDelete: Cascade, onUpdate: Cascade)
   id_user    String
-  created_at DateTime  @default(now())
-  updated_at DateTime?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("posts")
 }

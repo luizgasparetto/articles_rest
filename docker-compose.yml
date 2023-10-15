@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres:alpine3.17
+    image: postgres
     container_name: articles_postgres
     restart: always
     ports:
@@ -18,7 +18,7 @@ services:
 
   app:
     build: .
-    container_name: articles_app
+    container_name: app
     restart: always
     depends_on:
       - postgres
@@ -30,8 +30,8 @@ services:
       - articles-proxy
 
   nginx:
-    container_name: artucles_nginx
-    image: nginx:alpine
+    container_name: articles_nginx
+    image: nginx:1.16.0-alpine
     volumes:
       - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:

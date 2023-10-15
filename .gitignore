@@ -2,6 +2,13 @@
 /dist
 /node_modules
 
+# Lock files
+package-lock.json
+yarn.lock
+
+# Enviroment
+.env
+
 # Logs
 logs
 *.log
@@ -34,4 +41,4 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-yarn.lock
+
