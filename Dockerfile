@@ -1,35 +1,31 @@
 
 FROM node:18-alpine as base
 
-# BUILD
+# DEV
 
-FROM base As dev
+FROM base AS dev
 
 WORKDIR /usr/src/app
 
 COPY --chown=node:node package*.json ./
-
-RUN npm install 
-
 COPY --chown=node:node . .
 
-RUN npm run build &&npx prisma generate
+RUN npx prisma generate
 
 USER node
 
 # BUILD
 
-FROM base As build
+FROM base AS build
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node package*.json ./
 COPY --chown=node:node --from=dev /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node . .
+COPY --chown=node:node --from=dev . .
 
 RUN --mount=type=cache,target=/usr/src/app/.npm \
   npm set cache /usr/src/app/.npm && \
-  npm install --omit=dev
+  npm install && npm run build
 
 RUN npm cache clean --force
 
@@ -37,11 +33,16 @@ USER node
 
 # PRODUCTION
 
-FROM base As production
+FROM base AS production
+
+ARG PORT
+ENV PORT ${PORT:-3000}
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
-EXPOSE 3333
+USER node
 
-CMD [ "node", "dist/main.js" ]
+EXPOSE $PORT
+
+CMD [ "node", "dist/src/main.js" ]

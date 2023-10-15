@@ -1,9 +1,8 @@
 import { Controller, Get } from "@nestjs/common";
 
-import { clientError } from "@core/infra/protocols/http_response.protocol";
-
 import { GetAllPostsUsecase } from "../../domain/usecases/get_all_posts.usecase";
-import { FailGetPosts } from "../../domain/exceptions/post.exception";
+import { PostEntity } from "../../domain/entities/post_entity";
+import { BaseException } from "@core/exceptions/base_exception";
 
 
 @Controller('posts')
@@ -14,7 +13,13 @@ export class PostsController {
   ) { }
 
   @Get('all')
-  async getAll() {
+  async getAll(): Promise<PostEntity[] | BaseException> {
     const response = await this.getAllUsecase.execute();
+
+    if (response.isLeft()) {
+      throw response.value;
+    }
+
+    return response.value;
   }
 }

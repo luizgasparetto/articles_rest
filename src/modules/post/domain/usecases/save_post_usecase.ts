@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { BaseException } from "../../../../core/exceptions/base_exception";
-import { Either, Unit } from "../../../../core/logic/either";
-import { SavePostDTO } from "../dtos/save_post.dto";
 
+import { Either, Unit } from "@core/logic/either";
+import { BaseException } from "@core/exceptions/base_exception";
+
+import { SavePostDTO } from "../dtos/save_post.dto";
 
 export interface SavePostUsecase {
   execute(data: SavePostDTO): Promise<Either<BaseException, Unit>>;
