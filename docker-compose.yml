@@ -6,11 +6,9 @@ services:
     container_name: articles_postgres
     restart: always
     ports:
-      - 5432:5432
+      - 5433:5432
     volumes:
-      - postgres:/data/postgres
-    env_file:
-      - .env
+      - articles_postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -20,14 +18,15 @@ services:
     build: .
     container_name: app
     restart: always
-    depends_on:
-      - postgres
     ports:
-      - 3000:3000
+      - ${APP_PORT}:${APP_PORT}
     env_file:
       - .env
     networks:
       - articles-proxy
+    depends_on:
+      - postgres
+      - nginx
 
   nginx:
     container_name: articles_nginx
@@ -37,10 +36,10 @@ services:
     networks:
       - articles-proxy
     ports:
-      - 8888:8888
+      - ${NGINX_PORT}:${NGINX_PORT}
 
 volumes:
-  postgres:
+  articles_postgres:
     driver: local
 
 networks:
